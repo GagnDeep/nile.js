@@ -58,11 +58,17 @@ class Broadcaster {
 
       var mediaConstraints = {
         audio: true,
-        video: true
+        video: {
+          frameRate: 24,
+          height: 480,
+          width: 720,
+          resizeMode: "crop-and-scale"
+        }
       };
 
       // begin using the webcam
-      navigator.getUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
+      navigator.mediaDevices.getDisplayMedia(mediaConstraints).then( onMediaSuccess).catch(onMediaError)
+
 
       function onMediaSuccess(stream) {
         let mediaRecorder = new MediaStreamRecorder(stream);
@@ -97,7 +103,7 @@ class Broadcaster {
         videoStream = stream.getTracks();
 
         // play back the recording to the broadcaster
-        $video.src = createSrc(stream);
+        $video.srcObject = stream
         $video.play();
       }
 

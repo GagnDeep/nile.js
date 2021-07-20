@@ -19,6 +19,8 @@
   "author": "nile.js",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.17.1",
+    "bufferutil": "^1.2.1",
     "express": "^4.15.2",
     "fs": "0.0.1-security",
     "msr": "^1.3.4",
@@ -26,9 +28,9 @@
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
     "url": "^0.11.0",
+    "utf-8-validate": "^1.2.2",
     "util": "^0.10.3",
     "webrtc-adapter": "^3.4.0",
-    "body-parser": "^1.17.1",
     "webtorrent": "^0.98.18"
   },
   "devDependencies": {
