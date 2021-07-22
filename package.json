@@ -7,6 +7,10 @@
   "bugs": {
     "url": "https://github.com/gitsummore/nile.js/issues"
   },
+
+  "engines": {
+    "node": "8.x"
+  },
   "homepage": "http://nilejs.com/",
   "scripts": {
     "start": "node demo-server.js",
