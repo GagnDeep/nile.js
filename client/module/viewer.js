@@ -173,6 +173,7 @@ class Viewer {
   }
 
   _magnetURIHandler(magnetURI) {
+    // debugger
     console.log('Got magnet');
     // begin downloading the torrents and render them to page, alternate between three torrents
     if (this.torrentInfo['isPlay1Playing'] && this.torrentInfo['isPlay2Playing']) {
@@ -321,6 +322,25 @@ class Viewer {
         return file.name.endsWith('.webm')
       })
 
+      let file2 = torrent.files.find(function (file) {
+        return file.name.endsWith('.txt')
+      })
+
+      console.log({file2, file, b: file2.getBlob(async (err, blob) => {
+        try{
+          if(err){
+            console.error(err);
+            return
+          }
+
+          const val = await blob.text()
+          const temp = JSON.parse(val)
+          window.updateTextareaValue(temp)
+        }catch(err){
+          console.error(err)
+        }
+      })})
+
       // Stream the file in the browser
       if (first === 1) {
         window.setTimeout(() => file.renderTo(renderTo, { autoplay: true }), 7000);
@@ -356,8 +376,11 @@ class Viewer {
     let play2 = document.createElement('video');
     let play3 = document.createElement('video');
     play1.setAttribute('id', 'player1');
+    play1.setAttribute('controls', 'true');
     play2.setAttribute('id', 'player2');
+    play2.setAttribute('controls', 'true');
     play3.setAttribute('id', 'player3');
+    play3.setAttribute('controls', 'true');
     play2.setAttribute('hidden', true);
     play3.setAttribute('hidden', true);
     players.appendChild(play1);

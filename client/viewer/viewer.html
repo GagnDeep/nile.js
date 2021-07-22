@@ -5,24 +5,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Webtorrent Live Video Viewer</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="viewer.css">
 
 </head>
 
-<body>
+<body class="bg-gray-800 h-screen w-screen text-white flex flex-col items-center justify-center">
+
+  <textarea id="textarea" rows="5" cols="5" class="bg-gray-700 mb-2 border w-2/3 rounded text-sm p-2"></textarea>
   <div id="videos"></div>
-  <!--<div>
-    <code id="numPeers">0 peers</code><br>
-    <code id="downloaded">0 dl</code><br>
-    <code id="uploaded">0 ul</code>
-  </div>-->
-  <!--<div>
-    <ul id="log">
-    </ul>
-  </div>-->
-  <script src="./../dist/nile.Viewer.min.js"></script>
+
+  <script>
+
+    const textarea = document.getElementById("textarea")
+
+    window.updateTextareaValue = async (val) => {
+      if(Array.isArray(val) && val.length){
+        console.log(val)
+        const a = val.map(((item, i, arr) => {
+          if(i === 0){
+            return {
+              ...item,
+              delay: 0
+            }
+          }else{
+            return {
+              ...item,
+              delay: item.timestamp - arr[i-1].timestamp
+            }
+          }
+        }))
+        .map(item => () => new Promise(res => {
+          setTimeout(() => res(item), item.delay)
+        }))
+
+        
+        for(let i = 0; i<a.length; i++){
+          const temp = await a[i]()
+          console.log(temp)
+         textarea.value = temp.string
+        }
+      }{
+        console.error("not an array")
+        console.log({val})
+      }
+    }
+  </script>
+  <script src="./../dist/nile.Viewer.js"></script>
   <script src="viewMedia.js"></script>
+
+
 </body>
 
 </html>

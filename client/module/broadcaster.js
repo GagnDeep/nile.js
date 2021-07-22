@@ -58,16 +58,11 @@ class Broadcaster {
 
       var mediaConstraints = {
         audio: true,
-        video: {
-          frameRate: 24,
-          height: 480,
-          width: 720,
-          resizeMode: "crop-and-scale"
-        }
+        video:false
       };
 
       // begin using the webcam
-      navigator.mediaDevices.getDisplayMedia(mediaConstraints).then( onMediaSuccess).catch(onMediaError)
+      navigator.mediaDevices.getUserMedia(mediaConstraints).then( onMediaSuccess).catch(onMediaError)
 
 
       function onMediaSuccess(stream) {
@@ -79,14 +74,17 @@ class Broadcaster {
         // every _recordInterval, make a new torrent file and start seeding it
         mediaRecorder.ondataavailable = function (blob) {
 
-          const file = new File([blob], 'nilejs.webm', {
+          const file1 = new File([blob], 'nilejs.webm', {
             type: 'video/webm'
           });
 
-          // /* So that there is no delay in streaming between torrents, this section is going to 
-          //  * make instances of webtorrent and then alternate the seeding between the two
-          //  * once each seed is done, destroy the seed and initiate the next one
-          // */
+          const file2 = new File([new Blob([JSON.stringify(window.textareaValue)])], 'nilejs.txt', {
+            type: 'text/plain'
+          });
+          window.textareaValue = []
+
+          const file = [file1, file2]
+
           if (torrentInfo.was1 && torrentInfo.was2) {
             startSeeding(file, 'magnetURI3', '3', broadcaster, torrentInfo);
             torrentInfo.was1 = torrentInfo.was2 = false;
@@ -105,6 +103,7 @@ class Broadcaster {
         // play back the recording to the broadcaster
         $video.srcObject = stream
         $video.play();
+        $video.mute()
       }
 
       function onMediaError(e) {
@@ -176,8 +175,11 @@ class Broadcaster {
   }
 
   createBroadcast() {
-    let video = document.createElement('video');
+    let video = document.createElement('audio');
     video.setAttribute('id', 'broadcaster');
+    video.setAttribute('controls', 'true');
+    video.setAttribute('autoplay', 'true');
+    video.setAttribute('muted', 'true');
     document.getElementById(this.ID_of_NodeToRenderVideo).appendChild(video);
   }
 }

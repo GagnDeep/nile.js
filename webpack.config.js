@@ -2,7 +2,9 @@
 const webpack = require('webpack')
 const path = require('path')
 
-let PROD = JSON.parse(process.env.PROD_ENV || '0');
+let PROD = process.env.NODE_ENV === "production" ? 1: 0;
+
+console.log({PROD: process.env.MODE})
 
 module.exports = {
   entry: {

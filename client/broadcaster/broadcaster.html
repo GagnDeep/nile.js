@@ -5,23 +5,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Webtorrent Live Video Broadcaster</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="broadcaster.css">
 
 </head>
 
-<body>
-  <div id="video"></div>
-  <div class="buttons-wrapper">
-
-    <button id="button-play-gum" class="button-demo" href="#">Start Streaming</button>
-    <button id="button-stop-gum" class="button-demo" href="#">Stop Streaming</button>
+<body class="bg-gray-800 h-screen w-screen text-white flex flex-col items-center justify-center">
+  <textarea id="textarea" rows="5" cols="5" class="bg-gray-700 mb-2 border w-2/3 rounded text-sm p-2" placeholder="Start typing..."></textarea>
+  <div class="buttons-wrapper mb-4">
+    <button id="button-play-gum" class="button-demo bg-green-500 text-white px-6 py-2 rounded font-medium mx-3 hover:bg-green-600 transition duration-200 each-in-out text-sm" href="#">Start Streaming</button>
+    <button id="button-stop-gum" class="button-demo bg-red-500 text-white px-6 py-2 rounded font-medium mx-3 hover:bg-red-600 transition duration-200 each-in-out text-sm" href="#">Stop Streaming</button>
   </div>
+
+  <div id="video"></div>
 
   <!--<script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js"></script>-->
   <!--<script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>-->
   <!--<script src="./../module/broadcaster.js"></script>-->
   <!--<script src="http://localhost:8000/./../socket.io/socket.io.js"></script>-->
+
+  <script>
+
+    const textarea = document.getElementById("textarea")
+
+    textarea.onkeydown = (event) =>  {
+      window.textareaValue = window.textareaValue || [];
+
+      window.textareaValue = [
+        ...window.textareaValue,
+        {
+          string: event.target.value,
+          timestamp: Date.now()
+        }
+      ]
+    }
+  </script>
   <script src="./../dist/nile.Broadcaster.js"></script>
   <script src="broadcaster.js"></script>
 </body>
